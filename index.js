@@ -21,6 +21,4 @@ const runner = require("./runner");
 // the argument for maxDay is optional, remove it for no limit
 // runner.getDay(5).then((day) => runner.run(day))
 
-runner.run(16);
-
-("");
+runner.run(1);

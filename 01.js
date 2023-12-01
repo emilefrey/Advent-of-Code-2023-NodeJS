@@ -1,43 +1,72 @@
 var helpers = require("./helpers");
 
-const processElfSnackData = (data) => {
-  // split by blank line to separate out the elves
-  const elfSnackCalories = helpers.splitByBlankLine(data);
-  // convert the array of strings to array of int arrays
-  const arrayOfCalorieArrays = elfSnackCalories.map((elfSnacks) =>
-    elfSnacks.split("\n").map((elfSnack) => parseInt(elfSnack))
-  );
-  return arrayOfCalorieArrays;
-};
-
-const getElfSnackTotal = (calorieArray) => {
-  return calorieArray.reduce(
-    (partialSum, currentCalorieCount) => partialSum + currentCalorieCount,
-    0
-  );
-};
-
 const part1 = (data) => {
-  const elfCalorieData = processElfSnackData(data);
-  let maxCalorieCount = 0;
-  elfCalorieData.forEach((calorieArray) => {
-    const elfSnackTotalCalorieCount = getElfSnackTotal(calorieArray);
-    if (elfSnackTotalCalorieCount > maxCalorieCount) {
-      maxCalorieCount = elfSnackTotalCalorieCount;
-    }
-  });
-  return maxCalorieCount;
+  const lines = helpers.splitByNewLine(data);
+  const arrayOfNumbers = processLines(lines);
+  return getTotal(arrayOfNumbers);
 };
 
 const part2 = (data) => {
-  const elfCalorieData = processElfSnackData(data);
-  let calorieCountArray = [];
-  elfCalorieData.forEach((calorieArray) => {
-    const elfSnackTotalCalorieCount = getElfSnackTotal(calorieArray);
-    calorieCountArray.push(elfSnackTotalCalorieCount);
+  const lines = helpers.splitByNewLine(data);
+  const arrayOfNumbers = processLinesPart2(lines);
+  return getTotal(arrayOfNumbers);
+};
+
+const processLines = (lines) => {
+  const arrayOfCalibrationValues = lines.map((line) => {
+    // replace non-digits with emtpy strings, leaving only numbers behind
+    const numbersOnly = line.replace(/\D/g, "");
+    const firstNumber = numbersOnly[0];
+    const lastNumber = numbersOnly[numbersOnly.length - 1];
+    return parseInt(`${firstNumber}${lastNumber}`);
   });
-  calorieCountArray.sort((a, b) => b - a);
-  return calorieCountArray[0] + calorieCountArray[1] + calorieCountArray[2];
+  return arrayOfCalibrationValues;
+};
+
+const processLinesPart2 = (lines) => {
+  const matchValues = lines.map((line) => {
+    const matchedStrings = getNumberValues(line);
+    return parseInt(
+      `${matchedStrings[0]}${matchedStrings[matchedStrings.length - 1]}`
+    );
+  });
+  return matchValues;
+};
+
+const getNumberValues = (string) => {
+  const valueLookup = {
+    one: "1",
+    two: "2",
+    three: "3",
+    four: "4",
+    five: "5",
+    six: "6",
+    seven: "7",
+    eight: "8",
+    nine: "9",
+  };
+
+  return [
+    ...string.matchAll(
+      new RegExp(
+        /(?<=(one|two|three|four|five|six|seven|eight|nine|1|2|3|4|5|6|7|8|9))/,
+        "g"
+      )
+    ),
+  ].map((found) => {
+    const value = found[1];
+    if (value.length > 1) {
+      return valueLookup[value];
+    }
+    return value;
+  });
+};
+
+const getTotal = (arrayOfNumbers) => {
+  return arrayOfNumbers.reduce(
+    (partialSum, currentTotal) => partialSum + currentTotal,
+    0
+  );
 };
 
 module.exports = {
