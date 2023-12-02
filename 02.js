@@ -2,6 +2,12 @@ var helpers = require("./helpers");
 
 const part1 = (data) => {
   const lines = helpers.splitByNewLine(data);
+  const maxLookup = {
+    blue: 14,
+    red: 12,
+    green: 13,
+  };
+
   let total = 0;
   lines.forEach((line) => {
     let possible = true;
@@ -24,12 +30,6 @@ const part1 = (data) => {
     }
   });
   return total;
-};
-
-const maxLookup = {
-  blue: 14,
-  red: 12,
-  green: 13,
 };
 
 const part2 = (data) => {
