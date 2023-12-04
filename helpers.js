@@ -13,10 +13,15 @@ const getTotal = (arrayOfNumbers) => {
   );
 };
 
+function between(x, min, max) {
+  return x >= min && x <= max;
+}
+
 module.exports = {
   splitByNewLine,
   splitBySpace,
   splitByBlankLine,
   isUpperCase,
   getTotal,
+  between,
 };
