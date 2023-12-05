@@ -13,17 +13,20 @@ const part1 = (data) => {
     mapData.shift();
     mapData = mapData.map((dataString) => dataString.split(" "));
     // console.log(mapData);
-    mapData.forEach((data) => {
+    mapData.map((data) => {
       const destination = parseInt(data[0]);
       const source = parseInt(data[1]);
       const range = parseInt(data[2]);
 
-      for (let i = 0; i < range; i++) {
-        lookup[source + i] = `${destination + i}`;
-      }
+      // memory issue
+      // for (let i = 0; i < range; i++) {
+      //   lookup[source + i] = `${destination + i}`;
+      // }
+
+      return { source: source, destination: destination, range: range };
     });
     // console.log(lookup);
-    return lookup;
+    return mapData;
     // console.log(mapData);
     // mapData = mapData.map((data) => data.split(" "));
   });
@@ -32,16 +35,26 @@ const part1 = (data) => {
 
   const matching = [];
   seeds.forEach((seed) => {
-    let currentKey = seed;
+    let currentKey = parseInt(seed);
     for (let i = 0; i <= 6; i++) {
-      currentKey = allData[i][currentKey] ?? currentKey;
+      for (let j = 0; j < allData[i].length; j++) {
+        const destination = parseInt(allData[i][j][0]);
+        const source = parseInt(allData[i][j][1]);
+        const range = parseInt(allData[i][j][2]);
+        if (source <= currentKey && currentKey < source + range) {
+          currentKey = destination + (currentKey - source);
+          break;
+        }
+      }
+      // allData[i].forEach((data) => {});
+      // memory issue
+      // currentKey = allData[i][currentKey] ?? currentKey;
     }
     matching.push(parseInt(currentKey));
     matching.sort((a, b) => a - b);
   });
 
   return matching[0];
-  // lines.forEach((line) => {});
 };
 
 const part2 = (data) => {
