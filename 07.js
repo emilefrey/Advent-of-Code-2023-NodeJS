@@ -50,12 +50,14 @@ const determineHandTypePart2 = (occurrences) => {
     return 1;
   } else if (size === 3) {
     // either 3 of a kind or 2 pair
+    // 3 of a kind
     if (occurrenceValues.includes(3)) {
       if (jokerCount > 0) {
         return 4;
       }
       return 3;
     } else {
+      // 2 pair
       if (jokerCount === 1) {
         return "F";
       } else if (jokerCount === 2) {
@@ -64,10 +66,10 @@ const determineHandTypePart2 = (occurrences) => {
       return 2;
     }
   } else if (size === 2) {
+    //either full house or 4 of a kind
     if (jokerCount > 0) {
       return 5;
     }
-    //either full house or 4 of a kind
     if (occurrenceValues.includes(4)) {
       return 4;
     } else {
@@ -171,6 +173,7 @@ const part2 = (data) => {
     hands[handType].push({ hand, bid });
   });
 
+  // sort
   Object.values(hands).forEach((handArray) => {
     handArray.sort((a, b) => {
       for (let i = 0; i <= 4; i++) {
