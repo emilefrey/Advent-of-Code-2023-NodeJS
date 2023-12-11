@@ -3,7 +3,6 @@ var helpers = require("./helpers");
 const determineHandTypePart1 = (occurrences) => {
   const occurrenceKeys = Object.keys(occurrences);
   const occurrenceValues = Object.values(occurrences);
-  // console.log(occurrencKeys);
   const size = occurrenceKeys.length;
   if (size === 5) {
     // all cards unique, one of a kind
